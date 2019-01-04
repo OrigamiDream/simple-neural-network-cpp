@@ -4,7 +4,7 @@
 
 #include "Layer.h"
 
-Layer::Layer(FunctionType fnType, vNeuron neuronNum, vNeuron inputNum) : vWeights(*new Matrix(inputNum, neuronNum)), vFunctionType(std::move(fnType)), vNeurons(neuronNum) {
+Layer::Layer(FunctionType fnType, vNeuron neuronNum, vNeuron inputNum) : vWeights(Matrix(inputNum, neuronNum)), vFunctionType(std::move(fnType)), vNeurons(neuronNum) {
     for(vNeuron i = 0; i < inputNum; i++) {
         for(vNeuron j = 0; j < neuronNum; j++) {
             if(i == inputNum - 1) {

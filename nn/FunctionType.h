@@ -23,22 +23,22 @@ public:
 
 namespace FunctionTypes {
 
-    const FunctionType SIGMOID = *(new FunctionType([](double x) {
+    const FunctionType SIGMOID = FunctionType([](double x) {
         return 1.0 / (1.0 + exp(-x));
     }, [](double x) {
         return x * (1.0 - x);
-    }));
+    });
 
-    const FunctionType TANH = *(new FunctionType([](double x) {
+    const FunctionType TANH = FunctionType([](double x) {
         return tanh(x);
     }, [](double x) {
         return 1.0 - tanh(x) * tanh(x);
-    }));
+    });
 
-    const FunctionType RELU = *(new FunctionType([](double x) {
+    const FunctionType RELU = FunctionType([](double x) {
         return (x > 0.0) ? x : 0.0;
     }, [](double x) {
         return (x < 0.0 ? 1.0 : 0.0);
-    }));
+    });
 
 }

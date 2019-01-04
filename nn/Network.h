@@ -24,7 +24,7 @@ public:
     class Builder {
 
     public:
-        Builder(): bLayers(*(new vLayerBuilderList())), bInput(0), bIterations(0) {}
+        Builder(): bLayers(vLayerBuilderList()), bInput(0), bIterations(0) {}
 
         Builder * addLayer(Layer::Builder * builder);
 
@@ -46,19 +46,19 @@ public:
 public:
     static Builder * builder();
 
-    explicit Network(Builder * builder);
+    explicit Network(Builder * pbuilder);
 
-    void think(vMatrix input);
+    void think(vMatrix * input);
 
-    void think(Matrix input);
+    void think(Matrix * input);
 
-    void train(vMatrix input, vMatrix output);
+    void train(vMatrix * input, vMatrix * output);
 
-    void train(Matrix input, vMatrix output);
+    void train(Matrix * input, vMatrix * output);
 
-    void train(vMatrix input, Matrix output);
+    void train(vMatrix * input, Matrix * output);
 
-    void train(Matrix input, Matrix output);
+    void train(Matrix * input, Matrix * output);
 
     Matrix getOutput();
 

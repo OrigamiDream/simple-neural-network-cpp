@@ -2,20 +2,22 @@
 // Created by OrigamiDream on 2019-01-03.
 //
 
+#include <iostream>
 #include "Matrix.h"
 
 Matrix::Matrix(Long x, Long y) {
-    for(unsigned int i = 0; i < x; i++) {
-        vRow row(x);
-        for(unsigned int j = 0; j < y; j++) {
+    vActualMatrix = vMatrix(x);
+    for(Long i = 0; i < x; i++) {
+        vRow row(y);
+        for(Long j = 0; j < y; j++) {
             row[j] = 0;
         }
-        vActualMatrix.push_back(row);
+        vActualMatrix[i] = row;
     }
 }
 
-Matrix::Matrix(vMatrix matrix) {
-    vActualMatrix = std::move(matrix);
+Matrix::Matrix(vMatrix * matrix) {
+    vActualMatrix = *matrix;
 }
 
 vMatrix Matrix::getMatrix() {

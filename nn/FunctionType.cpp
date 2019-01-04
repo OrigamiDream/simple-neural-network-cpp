@@ -4,10 +4,7 @@
 
 #include "FunctionType.h"
 
-FunctionType::FunctionType(vFunction vFn, vFunction vDerivative) {
-    fn = std::move(vFn);
-    derivative_fn = std::move(vDerivative);
-}
+FunctionType::FunctionType(vFunction vFn, vFunction vDerivative) : fn(std::move(vFn)), derivative_fn(std::move(vDerivative)) {}
 
 vFunction FunctionType::getFunction() {
     return fn;

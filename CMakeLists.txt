@@ -3,4 +3,14 @@ project(simple_nn)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(simple_nn Matrix.h Matrix.cpp Global.h Layer.h FunctionType.h FunctionType.cpp Layer.cpp Network.h Network.cpp main.cpp)
+include(${CMAKE_CURRENT_SOURCE_DIR}/nn/CMakeLists.txt)
+
+foreach(files ${HEADER_FILES})
+    list(APPEND BUILD_FILES "nn/${files}")
+endforeach()
+
+foreach(files ${SOURCE_FILES})
+    list(APPEND BUILD_FILES "nn/${files}")
+endforeach()
+
+add_executable(${CMAKE_PROJECT_NAME} main.cpp ${BUILD_FILES})

@@ -17,6 +17,8 @@ public:
 
     Layer(FunctionType fnType, vNeuron neuronNum, vNeuron inputNum);
 
+    Layer(): vFunctionType(FunctionTypes::SIGMOID), vNeurons(0), vWeights(Matrix()) {}
+
     void adjust(Matrix adjust);
 
     class Builder {

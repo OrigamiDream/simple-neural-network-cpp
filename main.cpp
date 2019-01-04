@@ -1,12 +1,11 @@
 #include <iostream>
-#include "Network.h"
+#include "nn/Network.h"
 
 void analyze(vMatrix test, Network network);
 
 int main() {
     std::cout << "Starting neural network" << std::endl;
-    Network * pNetwork = Network::builder()->setLearningRate(0.1)->setIterations(100000)->setInputNeurons(2)
-            ->addLayer(Layer::builder()->setNeurons(4)->setFunctionType(FunctionTypes::SIGMOID))
+    Network * pNetwork = Network::builder()->setLearningRate(0.1)->setIterations(10000)->setInputNeurons(2)
             ->addLayer(Layer::builder()->setNeurons(3)->setFunctionType(FunctionTypes::SIGMOID))
             ->addLayer(Layer::builder()->setNeurons(1)->setFunctionType(FunctionTypes::SIGMOID))
             ->build();
@@ -16,7 +15,7 @@ int main() {
     vMatrix inputs {{ 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 }};
     vMatrix outputs {{ 0 }, { 1 }, { 1 }, { 0 }};
 
-    network.train(inputs, outputs);
+    network.train(&inputs, &outputs);
 
     analyze({{ 1, 1 }}, network);
     analyze({{ 1, 0 }}, network);
@@ -25,7 +24,7 @@ int main() {
 }
 
 void analyze(vMatrix test, Network network) {
-    network.think(std::move(test));
+    network.think(&test);
 
     vRow array = network.getOutput().getMatrix()[0];
     int result[array.size()];
@@ -37,6 +36,5 @@ void analyze(vMatrix test, Network network) {
             result[i] = 0;
         }
     }
-
-    std::cout << result << std::endl;
+    std::cout << "[" << test[0][0] << ", " << test[0][1] << "] -> " << result[0] << std::endl;
 }

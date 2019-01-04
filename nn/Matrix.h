@@ -16,7 +16,7 @@ private:
 public:
     explicit Matrix(Long x, Long y);
 
-    explicit Matrix(vMatrix matrix);
+    explicit Matrix(vMatrix * matrix);
 
     explicit Matrix(): vActualMatrix(0) {}
 

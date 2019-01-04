@@ -1,3 +1,5 @@
+#include <iostream>
+
 //
 // Created by OrigamiDream on 2019-01-03.
 //
@@ -35,15 +37,15 @@ Network::Network(Network::Builder * pbuilder) {
     Long len = builder.bLayers.size();
     this->vLayers = vLayerList(len);
     this->oLayers = vMatrixList(len);
-    Layer prev { FunctionTypes::SIGMOID, 0, 0 }; // default
+    Layer prev;
     for(Long i = 0; i < len; i++) {
         Layer::Builder layer = builder.bLayers[i];
         if(i == 0) {
-            this->vLayers[i] = *(new Layer(layer.bFunctionType, layer.bNeurons, builder.bInput));
+            this->vLayers[i] = Layer(layer.bFunctionType, layer.bNeurons, builder.bInput);
         } else {
-            this->vLayers[i] = *(new Layer(layer.bFunctionType, (i == len - 1) ? layer.bNeurons - 1 : layer.bNeurons, prev.vNeurons));
+            this->vLayers[i] = Layer(layer.bFunctionType, (i == len - 1) ? layer.bNeurons - 1 : layer.bNeurons, prev.vNeurons);
         }
-        prev = std::move(this->vLayers[i]);
+        prev = this->vLayers[i];
     }
 }
 
@@ -51,11 +53,12 @@ Network::Builder *Network::builder() {
     return new Network::Builder();
 }
 
-void Network::think(vMatrix input) {
-    think(*(new Matrix(std::move(input))));
+void Network::think(vMatrix * input) {
+    think(new Matrix(input));
 }
 
-void Network::think(Matrix input) {
+void Network::think(Matrix * pinput) {
+    Matrix input = *pinput;
     for(Long i = 0; i < vLayers.size(); i++) {
         Layer layer = vLayers[i];
 
@@ -67,25 +70,30 @@ void Network::think(Matrix input) {
     }
 }
 
-void Network::train(vMatrix input, vMatrix output) {
-    train(Matrix(std::move(input)), Matrix(std::move(output)));
+void Network::train(vMatrix* input, vMatrix * output) {
+    train(new Matrix(input), new Matrix(output));
 }
 
-void Network::train(Matrix input, vMatrix output) {
-    train(input, Matrix(std::move(output)));
+void Network::train(Matrix * input, vMatrix * output) {
+    train(input, new Matrix(output));
 }
 
-void Network::train(vMatrix input, Matrix output) {
-    train(Matrix(std::move(input)), output);
+void Network::train(vMatrix * input, Matrix * output) {
+    train(new Matrix(input), output);
 }
 
-void Network::train(Matrix input, Matrix output) {
+void Network::train(Matrix * pinput, Matrix * poutput) {
+    Matrix input = *pinput;
+    Matrix output = *poutput;
     for(Long iteration = 0; iteration < vIterations; iteration++) {
-        think(input);
+        think(&input);
 
         Matrix prev;
-        Matrix deltas[oLayers.size()];
+        vMatrixList deltas(oLayers.size());
         for(Long i = oLayers.size() - 1; i >= 0; i--) {
+            if(i >= oLayers.size()) {
+                break;
+            }
             Matrix layer = oLayers[i];
             Matrix delta;
             if(i == oLayers.size() - 1) {
@@ -97,7 +105,7 @@ void Network::train(Matrix input, Matrix output) {
             prev = delta;
         }
 
-        for(Long i = 0; i < (sizeof(deltas) / sizeof(*deltas)); i++) {
+        for(Long i = 0; i < deltas.size(); i++) {
             Matrix adjustment;
             if(i == 0) {
                 adjustment = input.transpose() * deltas[i];
@@ -109,12 +117,11 @@ void Network::train(Matrix input, Matrix output) {
             });
 
             vLayers[i].adjust(adjustment);
-
-            delete &adjustment;
         }
 
-        delete &prev;
-        delete[] &deltas;
+        if(iteration % 1000 == 0) {
+            std::cout << " Iterations: " << iteration << std::endl;
+        }
     }
 }
 
