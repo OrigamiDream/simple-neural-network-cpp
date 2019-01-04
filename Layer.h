@@ -10,26 +10,26 @@
 
 class Layer {
 
-private:
-    Matrix weights;
-    FunctionType functionType;
-    vNeuron neurons;
-
 public:
+    Matrix vWeights;
+    FunctionType vFunctionType;
+    vNeuron vNeurons;
+
     Layer(FunctionType fnType, vNeuron neuronNum, vNeuron inputNum);
 
     void adjust(Matrix adjust);
 
     class Builder {
 
-    private:
-        FunctionType functionType = SIGMOID;
-        int neurons = 0;
-
     public:
-        Builder * function(FunctionType fnType);
+        FunctionType bFunctionType;
+        vNeuron bNeurons;
 
-        Builder * neuron(int neurons);
+        Builder(): bFunctionType(FunctionTypes::SIGMOID), bNeurons(0) {}
+
+        Builder * setFunctionType(FunctionType fnType);
+
+        Builder * setNeurons(int neurons);
     };
 
     static Builder * builder();

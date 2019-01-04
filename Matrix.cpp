@@ -10,16 +10,16 @@ Matrix::Matrix(Long x, Long y) {
         for(unsigned int j = 0; j < y; j++) {
             row[j] = 0;
         }
-        d_matrix.push_back(row);
+        vActualMatrix.push_back(row);
     }
 }
 
 Matrix::Matrix(vMatrix matrix) {
-    d_matrix = std::move(matrix);
+    vActualMatrix = std::move(matrix);
 }
 
 vMatrix Matrix::getMatrix() {
-    return d_matrix;
+    return vActualMatrix;
 }
 
 Long Matrix::xLength() {
@@ -35,7 +35,7 @@ Long Matrix::yLength(Long index) {
 }
 
 void Matrix::set(Long x, Long y, double value) {
-    d_matrix[x][y] = value;
+    vActualMatrix[x][y] = value;
 }
 
 Matrix Matrix::operator*(Matrix other) {

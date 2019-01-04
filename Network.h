@@ -14,32 +14,52 @@ typedef std::vector<Layer::Builder> vLayerBuilderList;
 
 class Network {
 
-private:
-    vLayerList layers;
+public:
+    vLayerList vLayers;
     vMatrixList oLayers;
-    double learningRate;
-    double iterations;
+    double vLearningRate;
+    Long vIterations;
 
 public:
     class Builder {
 
-    private:
-        vLayerBuilderList layers;
-        double learningRate = 0.1;
-        vNeuron input;
-        Long iterations;
+    public:
+        Builder(): bLayers(*(new vLayerBuilderList())), bInput(0), bIterations(0) {}
 
-        Builder * addLayer(Layer::Builder builder);
+        Builder * addLayer(Layer::Builder * builder);
 
-        Builder * inputNeurons(vNeuron inputNeurons);
+        Builder * setInputNeurons(vNeuron inputNeurons);
 
         Builder * setLearningRate(double learningRate);
 
         Builder * setIterations(Long iterations);
 
-        Network build();
+        Network * build();
+
+    public:
+        double bLearningRate = 0.1;
+        Long bIterations;
+        vLayerBuilderList bLayers;
+        vNeuron bInput;
     };
 
+public:
+    static Builder * builder();
+
     explicit Network(Builder * builder);
+
+    void think(vMatrix input);
+
+    void think(Matrix input);
+
+    void train(vMatrix input, vMatrix output);
+
+    void train(Matrix input, vMatrix output);
+
+    void train(vMatrix input, Matrix output);
+
+    void train(Matrix input, Matrix output);
+
+    Matrix getOutput();
 
 };

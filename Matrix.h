@@ -11,12 +11,14 @@ class Matrix {
 
     // Capsules
 private:
-    vMatrix d_matrix;
+    vMatrix vActualMatrix;
 
 public:
     explicit Matrix(Long x, Long y);
 
     explicit Matrix(vMatrix matrix);
+
+    explicit Matrix(): vActualMatrix(0) {}
 
     // Basic matric methods
 public:
