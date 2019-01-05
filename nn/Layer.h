@@ -1,7 +1,3 @@
-//
-// Created by OrigamiDream on 2019-01-03.
-//
-
 #pragma once
 
 #include "Global.h"
@@ -15,7 +11,7 @@ public:
     FunctionType vFunctionType;
     vNeuron vNeurons;
 
-    Layer(FunctionType fnType, vNeuron neuronNum, vNeuron inputNum);
+    explicit Layer(FunctionType fnType, vNeuron neuronNum, vNeuron inputNum);
 
     Layer(): vFunctionType(FunctionTypes::SIGMOID), vNeurons(0), vWeights(Matrix()) {}
 

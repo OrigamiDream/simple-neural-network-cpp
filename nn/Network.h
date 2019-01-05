@@ -1,7 +1,3 @@
-//
-// Created by OrigamiDream on 2019-01-03.
-//
-
 #pragma once
 
 #include "Global.h"

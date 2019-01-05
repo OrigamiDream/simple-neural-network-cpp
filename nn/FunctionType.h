@@ -1,7 +1,3 @@
-//
-// Created by OrigamiDream on 2019-01-03.
-//
-
 #pragma once
 
 #include "Global.h"
@@ -14,7 +10,7 @@ private:
     vFunction derivative_fn;
 
 public:
-    FunctionType(vFunction vFn, vFunction vDerivative);
+    explicit FunctionType(vFunction vFn, vFunction vDerivative);
 
     vFunction getFunction();
 

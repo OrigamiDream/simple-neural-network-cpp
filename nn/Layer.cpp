@@ -1,7 +1,3 @@
-//
-// Created by OrigamiDream on 2019-01-03.
-//
-
 #include "Layer.h"
 
 Layer::Layer(FunctionType fnType, vNeuron neuronNum, vNeuron inputNum) : vWeights(Matrix(inputNum, neuronNum)), vFunctionType(std::move(fnType)), vNeurons(neuronNum) {

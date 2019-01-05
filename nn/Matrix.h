@@ -1,7 +1,3 @@
-//
-// Created by OrigamiDream on 2019-01-03.
-//
-
 #pragma once
 
 #include <functional>
@@ -18,7 +14,7 @@ public:
 
     explicit Matrix(vMatrix * matrix);
 
-    explicit Matrix(): vActualMatrix(0) {}
+    Matrix(): vActualMatrix(0) {}
 
     // Basic matric methods
 public:

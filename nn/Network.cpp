@@ -1,8 +1,4 @@
 #include <iostream>
-
-//
-// Created by OrigamiDream on 2019-01-03.
-//
 #include "Network.h"
 
 Network::Builder * Network::Builder::addLayer(Layer::Builder * builder) {
@@ -47,6 +43,8 @@ Network::Network(Network::Builder * pbuilder) {
         }
         prev = this->vLayers[i];
     }
+
+    delete pbuilder;
 }
 
 Network::Builder *Network::builder() {
@@ -62,11 +60,14 @@ void Network::think(Matrix * pinput) {
     for(Long i = 0; i < vLayers.size(); i++) {
         Layer layer = vLayers[i];
 
+        Matrix mult;
         if(i == 0) {
-            oLayers[i] = (input * layer.vWeights).apply(layer.vFunctionType.getFunction());
+            mult = input * layer.vWeights;
         } else {
-            oLayers[i] = (oLayers[i - 1] * layer.vWeights).apply(layer.vFunctionType.getFunction());
+            mult = oLayers[i - 1] * layer.vWeights;
         }
+
+        oLayers[i] = mult.apply(layer.vFunctionType.getFunction());
     }
 }
 
