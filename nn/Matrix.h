@@ -30,15 +30,16 @@ public:
 
     // Operators
 public:
+
     Matrix operator*(Matrix other);
 
     Matrix operator-(Matrix other);
 
     Matrix operator+(Matrix other);
 
-    Matrix transpose();
+    Matrix integrate(Matrix other);
 
-    Matrix scalar(Matrix other);
+    Matrix transpose();
 
     Matrix apply(std::function<double(double)> fn);
 

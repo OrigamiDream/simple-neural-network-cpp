@@ -37,18 +37,14 @@ void Matrix::set(Long x, Long y, double value) {
 }
 
 Matrix Matrix::operator*(Matrix other) {
-    if(this->xLength() == 0 || other.xLength() == 0 || yLength() != other.xLength()) {
-        throw std::runtime_error("Requires same matrix");
+    if(xLength() != other.xLength()) {
+        throw std::runtime_error("Requires same scalar vectors");
     }
 
-    Matrix result {xLength(), other.yLength()};
+    Matrix result {xLength(), yLength()};
     for(Long i = 0; i < xLength(); i++) {
-        for(Long j = 0; j < other.yLength(); j++) {
-            double value = 0;
-            for(Long h = 0; h < yLength(); h++) {
-                value += getMatrix()[i][h] * other.getMatrix()[h][j];
-            }
-            result.set(i, j, value);
+        for(Long j = 0; j < yLength(i); j++) {
+            result.set(i, j, getMatrix()[i][j] * other.getMatrix()[i][j]);
         }
     }
     return result;
@@ -81,25 +77,29 @@ Matrix Matrix::operator+(Matrix other) {
     return result;
 }
 
-Matrix Matrix::transpose() {
-    Matrix result {yLength(), xLength()};
+Matrix Matrix::integrate(Matrix other) {
+    if(this->xLength() == 0 || other.xLength() == 0 || yLength() != other.xLength()) {
+        throw std::runtime_error("Requires same matrix");
+    }
+
+    Matrix result {xLength(), other.yLength()};
     for(Long i = 0; i < xLength(); i++) {
-        for(Long j = 0; j < yLength(i); j++) {
-            result.set(j, i, getMatrix()[i][j]);
+        for(Long j = 0; j < other.yLength(); j++) {
+            double value = 0;
+            for(Long h = 0; h < yLength(); h++) {
+                value += getMatrix()[i][h] * other.getMatrix()[h][j];
+            }
+            result.set(i, j, value);
         }
     }
     return result;
 }
 
-Matrix Matrix::scalar(Matrix other) {
-    if(xLength() != other.xLength()) {
-        throw std::runtime_error("Requires same scalar vectors");
-    }
-
-    Matrix result {xLength(), yLength()};
+Matrix Matrix::transpose() {
+    Matrix result {yLength(), xLength()};
     for(Long i = 0; i < xLength(); i++) {
         for(Long j = 0; j < yLength(i); j++) {
-            result.set(i, j, getMatrix()[i][j] * other.getMatrix()[i][j]);
+            result.set(j, i, getMatrix()[i][j]);
         }
     }
     return result;

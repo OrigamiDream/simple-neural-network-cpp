@@ -62,9 +62,9 @@ void Network::think(Matrix * pinput) {
 
         Matrix mult;
         if(i == 0) {
-            mult = input * layer.vWeights;
+            mult = input.integrate(layer.vWeights);
         } else {
-            mult = oLayers[i - 1] * layer.vWeights;
+            mult = oLayers[i - 1].integrate(layer.vWeights);
         }
 
         oLayers[i] = mult.apply(layer.vFunctionType.getFunction());
@@ -98,9 +98,9 @@ void Network::train(Matrix * pinput, Matrix * poutput) {
             Matrix layer = oLayers[i];
             Matrix delta;
             if(i == oLayers.size() - 1) {
-                delta = (output - layer).scalar(layer.apply(vLayers[i].vFunctionType.getDerivative()));
+                delta = (output - layer) * (layer.apply(vLayers[i].vFunctionType.getDerivative()));
             } else {
-                delta = (prev * vLayers[i + 1].vWeights.transpose()).scalar(layer.apply(vLayers[i].vFunctionType.getDerivative()));
+                delta = (prev.integrate(vLayers[i + 1].vWeights.transpose())) * (layer.apply(vLayers[i].vFunctionType.getDerivative()));
             }
             deltas[i] = delta;
             prev = delta;
@@ -109,9 +109,9 @@ void Network::train(Matrix * pinput, Matrix * poutput) {
         for(Long i = 0; i < deltas.size(); i++) {
             Matrix adjustment;
             if(i == 0) {
-                adjustment = input.transpose() * deltas[i];
+                adjustment = input.transpose().integrate(deltas[i]);
             } else {
-                adjustment = oLayers[i - 1].transpose() * deltas[i];
+                adjustment = oLayers[i - 1].transpose().integrate(deltas[i]);
             }
             adjustment = adjustment.apply([&](double x) {
                 return vLearningRate * x;
